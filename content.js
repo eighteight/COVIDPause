@@ -51,15 +51,12 @@ function hideNode(node) {
 }
 
 function fixNode(node, denylist) {
-
-    var testString = node.nodeValue.replace(/\s/g, "");
-    if (testString && testString !== '') {
-        denylist.forEach(word => {
-            if (testString.includes(word) || testString.toLowerCase().includes(word.toLowerCase())) {
-                hideNode(node);
-            }
-        });
-    }
+    var testString = node.nodeValue;
+    denylist.forEach(word => {
+        if (testString.includes(word) || testString.toLowerCase().includes(word.toLowerCase())) {
+            hideNode(node);
+        }
+    });
 }
 
 function fixElements(elements, denylist) {
@@ -82,13 +79,9 @@ let observer;
 function setup() {
     chrome.storage.local.get(['JunkIt'], function(data) {
 
-        const denylist = data.JunkIt;
-
         sheet.innerHTML = ".JunkIt {display: none !important}";
 
-
-
-        fixElements(getTextNodes(document.body), denylist);
+        fixElements(getTextNodes(document.body), data.JunkIt);
 
         observer = new MutationObserver(mutations => {
             // would be great to limit these updates only to the modified elements
@@ -104,7 +97,6 @@ function setup() {
 
         observer.observe(document.body, config);
     });
-
 }
 
 function teardown() {
