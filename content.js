@@ -6,13 +6,13 @@ if (host == 'www.facebook.com') {
         node.getAttribute('data-type') == 'type_facebook_app');
 } else if (host == 'news.yahoo.com') {
     condition = node => (
-        node.classList.contains('js-stream-content') || 
+        node.classList.contains('js-stream-content') ||
         node.classList.contains('Cf'));
 } else if (host == 'news.google.com') {
     condition = node => (
-        node.tagName == 'ARTICLE' || 
+        node.tagName == 'ARTICLE' ||
         node.getAttribute('aria-label') == 'COVID-19' ||
-        (node.getAttribute('jsdata') && node.getAttribute('jsdata').indexOf('covid') != -1))
+        (node.getAttribute('jsdata') && node.getAttribute('jsdata').indexOf('JunkIt') != -1))
 } else if (host == 'www.huffpost.com') {
     condition = node => (
         node.classList.contains('card'))
@@ -24,7 +24,7 @@ if (host == 'www.facebook.com') {
         node.classList.contains('fc-item'))
 } else if (host == 'www.youtube.com') {
     condition = node => (
-        node.tagName == 'YTD-VIDEO-RENDERER' || 
+        node.tagName == 'YTD-VIDEO-RENDERER' ||
         node.tagName == 'YTD-GRID-VIDEO-RENDERER')
 } else if (host == 'www.reddit.com') {
     condition = node => (
@@ -47,63 +47,68 @@ document.body.appendChild(sheet);
 
 function hideNode(node) {
     let parent = findParentArticle(node.parentElement);
-    parent.classList.add('covidpause');
+    parent.classList.add('JunkIt');
 }
 
 function fixNode(node, denylist) {
-    denylist.forEach(word => {
-        if (node.nodeValue.indexOf(word) != -1) {
-            hideNode(node);
-        }
-    })
+
+    var testString = node.nodeValue.replace(/\s/g, "");
+    if (testString && testString !== '') {
+        denylist.forEach(word => {
+            if (testString.includes(word) || testString.toLowerCase().includes(word.toLowerCase())) {
+                hideNode(node);
+            }
+        });
+    }
 }
 
 function fixElements(elements, denylist) {
-    Array.from(elements).forEach(element => {
-        Array.from(element.childNodes).forEach(node => {
-            if (node.nodeType === 3) {
-                fixNode(node, denylist);
-            }
-        })
+    elements.forEach(node => {
+        fixNode(node, denylist);
     })
+}
+
+function getTextNodes(parent){
+    var all = [];
+    for (parent = parent.firstChild; parent; parent = parent.nextSibling) {
+        if (['SCRIPT','STYLE'].indexOf(parent.tagName) >= 0) continue;
+        if (parent.nodeType === Node.TEXT_NODE) all.push(parent);
+        else all = all.concat(getTextNodes(parent));
+    }
+    return all;
 }
 
 let observer;
 function setup() {
-    // optimized for speed, not accuracy
-    // removed first letters to ignore Title Capitalization
-    let denylist = [
-        'OVID',
-        'ovid',
-        'orona',
-        'irus',
-        'uarantin',
-        'ockdown',
-        'andemic'
-    ];
+    chrome.storage.local.get(['JunkIt'], function(data) {
 
-    sheet.innerHTML = ".covidpause {display: none !important}";
+        const denylist = data.JunkIt;
 
-    fixElements(document.getElementsByTagName('*'), denylist);
+        sheet.innerHTML = ".JunkIt {display: none !important}";
 
-    observer = new MutationObserver(mutations => {
-        // would be great to limit these updates only to the modified elements
-        // but i haven't found a way to do that consistently
-        fixElements(document.getElementsByTagName('*'), denylist);
+
+
+        fixElements(getTextNodes(document.body), denylist);
+
+        observer = new MutationObserver(mutations => {
+            // would be great to limit these updates only to the modified elements
+            // but i haven't found a way to do that consistently
+            fixElements(getTextNodes(document.body), denylist);
+        });
+
+        var config = {
+            childList: true,
+            subtree: true,
+            characterData: true
+        };
+
+        observer.observe(document.body, config);
     });
 
-    var config = {
-        childList: true, 
-        subtree: true,
-        characterData: true
-    };
-
-    observer.observe(document.body, config);
-    console.log('connect')
 }
 
 function teardown() {
-    sheet.innerHTML = ".covidpause {}";
+    sheet.innerHTML = ".JunkIt {}";
     if (observer) {
         observer.disconnect();
         console.log('disconnect')

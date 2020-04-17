@@ -18,3 +18,38 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         setEnabled(!result.enabled);
     });
 });
+
+chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
+    suggest([
+        {content: text + " one", description: "the first one"},
+        {content: text + " number two", description: "the second entry"}
+    ]);
+});
+
+
+chrome.omnibox.onInputEntered.addListener(function(text) {
+
+    chrome.storage.local.get(['JunkIt'], function(data) {
+
+        let userList = data.JunkIt;
+        if (Array.isArray(userList)) {
+            if (userList.indexOf(text) !== -1) {
+                alert(text + ' is already junked!');
+                return;
+            } else {
+                userList.push(text);
+            }
+        } else {
+            userList = [text];
+        }
+
+        alert(text + ' will be junked!');
+
+        chrome.storage.local.set({"JunkIt": userList}, function(){
+            alert('here we go');
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.reload(tabs[0].id);
+            });
+        });
+    });
+});
