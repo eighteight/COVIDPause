@@ -39,7 +39,9 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
         chrome.storage.local.set({"JunkIt": userList}, function(){
             alert('here we go');
             chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.reload(tabs[0].id);
+                chrome.tabs.sendMessage(tabs[0].id, {what: "JunkIt"}, function(response) {
+                    console.log(response.farewell);
+                });
             });
         });
     });

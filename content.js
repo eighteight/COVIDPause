@@ -60,6 +60,7 @@ function fixNode(node, denylist) {
 }
 
 function fixElements(elements, denylist) {
+    console.log('fixing ');
     elements.forEach(node => {
         fixNode(node, denylist);
     })
@@ -86,7 +87,7 @@ function setup() {
         observer = new MutationObserver(mutations => {
             // would be great to limit these updates only to the modified elements
             // but i haven't found a way to do that consistently
-            fixElements(getTextNodes(document.body), denylist);
+            fixElements(getTextNodes(document.body), data.JunkIt);
         });
 
         var config = {
@@ -111,7 +112,7 @@ chrome.storage.local.get(['enabled'], result => {
     if (result.enabled) {
         setup();
     }
-})
+});
 
 chrome.storage.onChanged.addListener(storage => {
     let enabled = storage.enabled.newValue;
@@ -120,4 +121,11 @@ chrome.storage.onChanged.addListener(storage => {
     } else {
         teardown();
     }
-})
+});
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+        setup();
+        if (request.what == "JunkIt")
+            sendResponse({farewell: "all junked"});
+    });
