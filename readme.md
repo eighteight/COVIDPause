@@ -1,15 +1,8 @@
-# COVID Pause
+# JunkIt!
 
-![nytimes.com](images/covidpause.gif)
+![nytimes.com](images/Untitled.mp4)
 
-This extension removes content from websites that contain the following keywords:
-
-* "COVID"
-* "corona" or "virus",
-* "quarantine" or "lockdown"
-* "pandemic"
-
-Additional words may be added at the top of `content.js` as appropriate.
+This extension removes content from websites that contain the keywords you don't like:
 
 Some special cases are handled on some of the most popular English-language websites to remove content at the card/article level, instead of removing the text alone.
 
@@ -23,4 +16,4 @@ Some special cases are handled on some of the most popular English-language webs
 
 ## Usage
 
-To temporarily enable/disable COVID Pause, click the COVID Pause icon at the top right.
+To temporarily enable/disable JunkIt!, click the JunkIt icon at the top right.
