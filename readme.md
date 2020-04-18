@@ -8,7 +8,7 @@ Some special cases are handled on some of the most popular English-language webs
 
 ## Install
 
-1. Download [this file](https://github.com/kylemcdonald/COVIDPause/archive/master.zip) and unzip.
+1. Download [this file](https://github.com/eighteight/COVIDPause/releases/tag/1) and unzip.
 2. Go to `chrome://extensions/`, or from the menu bar select "Window > Extensions".
 3. At the top right, click "Developer mode" to enable unpacked extensions.
 4. Click the "Load Unpacked" button at the top left.
