@@ -1,6 +1,7 @@
 # JunkIt!
 
-(images/Untitled.mp4)
+
+[![JunkIt](https://img.youtube.com/vi/cwBD83SquVM/0.jpg)](https://youtu.be/cwBD83SquVM)
 
 This extension removes content from websites that contain the keywords you don't like:
 
