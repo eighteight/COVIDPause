@@ -1,6 +1,6 @@
 # JunkIt!
 
-![nytimes.com](images/Untitled.mp4)
+(images/Untitled.mp4)
 
 This extension removes content from websites that contain the keywords you don't like:
 
