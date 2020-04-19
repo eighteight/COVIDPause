@@ -1,7 +1,9 @@
+
+
 function setEnabled(enabled) {
     let status = enabled ? 'Disable' : 'Enable';
-    let title = status + ' JunkIt Pause'
     chrome.browserAction.setBadgeText({text: enabled ? '' : 'Off'});
+
     chrome.storage.local.set({'enabled': enabled});
 }
 
@@ -18,9 +20,8 @@ chrome.browserAction.onClicked.addListener(function(tab) {
     });
 });
 
-chrome.omnibox.onInputEntered.addListener(function(text) {
-
-    chrome.storage.local.get(['JunkIt'], function(data) {
+function updateJunk(text) {
+    chrome.storage.local.get(['JunkIt'], function (data) {
 
         let userList = data.JunkIt;
         if (Array.isArray(userList)) {
@@ -36,13 +37,41 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
 
         alert(text + ' will be junked!');
 
-        chrome.storage.local.set({"JunkIt": userList}, function(){
-            alert('here we go');
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {what: "JunkIt"}, function(response) {
+        chrome.storage.local.set({"JunkIt": userList}, function () {
+            chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {what: "JunkIt"}, function (response) {
                     console.log(response.farewell);
                 });
             });
         });
     });
+}
+
+chrome.omnibox.onInputEntered.addListener(function(text) {
+    updateJunk(text);
+});
+
+chrome.runtime.onInstalled.addListener(function() {
+    chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+        chrome.declarativeContent.onPageChanged.addRules([{
+            conditions: [new chrome.declarativeContent.PageStateMatcher({
+                pageUrl: {hostEquals: 'junkit.tilda.ws'},
+            })
+            ],
+            actions: [new chrome.declarativeContent.ShowPageAction()]
+        }]);
+    });
+});
+
+
+function onAddJunk (e) {
+    if (e.selectionText) {
+        updateJunk(e.selectionText);
+    }
+}
+
+chrome.contextMenus.create({
+    "title": "Junk It",
+    "contexts": ["page", "selection", "link"],
+    "onclick" : onAddJunk
 });
