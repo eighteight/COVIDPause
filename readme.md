@@ -10,7 +10,7 @@ Some special cases are handled on some of the most popular English-language webs
 ## Install
 
 1. Download [this file](https://github.com/eighteight/JunkIt/archive/1.1.zip) and unzip.
-2. Go to `(chrome://extensions/)`, or from the menu bar select "Window > Extensions".
+2. Go to [chrome://extensions/](chrome://extensions/), or from the menu bar select "Window > Extensions".
 3. At the top right, click "Developer mode" to enable unpacked extensions.
 4. Click the "Load Unpacked" button at the top left.
 5. Select the unzipped folder.
