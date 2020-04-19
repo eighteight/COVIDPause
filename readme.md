@@ -9,7 +9,7 @@ Some special cases are handled on some of the most popular English-language webs
 
 ## Install
 
-1. Download [this file](https://github.com/eighteight/JunkIt/archive/1.2.zip) and unzip.
+1. Download [this file](https://github.com/eighteight/JunkIt/archive/1.1.zip) and unzip.
 2. Go to `chrome://extensions/`, or from the menu bar select "Window > Extensions".
 3. At the top right, click "Developer mode" to enable unpacked extensions.
 4. Click the "Load Unpacked" button at the top left.
@@ -17,7 +17,4 @@ Some special cases are handled on some of the most popular English-language webs
 
 ## Usage
 
-To junk a content related to a junk word, select that word, right-click and select "Junk It"
-Alternately, type "junk" and press Tab in the address bar, then type a word to junk and press Enter
 To temporarily enable/disable JunkIt!, click the JunkIt icon at the top right.
-
