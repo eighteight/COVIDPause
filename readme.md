@@ -17,4 +17,7 @@ Some special cases are handled on some of the most popular English-language webs
 
 ## Usage
 
+To junk a content related to a junk word, select that word, right-click and select "Junk It"
+Alternately, type "junk" and press Tab in the address bar, then type a word to junk and press Enter
 To temporarily enable/disable JunkIt!, click the JunkIt icon at the top right.
+

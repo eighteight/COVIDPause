@@ -34,7 +34,6 @@
     },
     "permissions": [
         "storage",
-        "declarativeContent",
         "contextMenus"
     ],
     "omnibox": { "keyword" : "junk" },
